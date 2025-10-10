@@ -7,3 +7,5 @@ Eye Health Analyzer is a **machine learning-based system** that classifies eye i
 
 ## Dataset
 - The project uses eye images organized into 4 folders:  
+## Data set download link
+'https://www.kaggle.com/datasets/gunavenkatdoddi/eye-diseases-classification?resource=download'
