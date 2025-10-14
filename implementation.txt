@@ -1,0 +1,49 @@
+<----------------------------------------------------------------------------------->
+1) Prepare environment
+cd C:\path\to\eye-health-analyzer-ml
+python -m venv venv
+venv\Scripts\Activate.ps1    # or use Activate.bat if not using PowerShell
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+<----------------------------------------------------------------------------------->
+2) Place the dataset
+eye-health-analyzer-ml/
+├─ dataset/
+│  ├─ Cataract/
+│  ├─ Diabetic_Retinopathy/   # or "Diabetic Retinopathy" (both OK)
+│  ├─ Glaucoma/
+│  └─ Normal/
+<----------------------------------------------------------------------------------->
+3) Train the models (feature extraction + training)
+python src/train.py --dataset_dir dataset --out_dir models
+<----------------------------------------------------------------------------------->
+4)Verify saved artifacts
+ls -la models
+# Windows
+dir models
+You should see (examples):
+
+random_forest.joblib or svc.joblib
+
+scaler.joblib
+
+label_encoder.joblib
+<----------------------------------------------------------------------------------->
+5) Run inference on a single image
+python src/infer.py --image dataset/Normal/XXXXX.jpg --model models/random_forest.joblib --scaler models/scaler.joblib --le models/label_encoder.joblib
+<----------------------------------------------------------------------------------->
+6) Quick test script (optional) — run inference on a few images
+python - <<'PY'
+import glob, os
+from src.infer import predict_image
+model="models/random_forest.joblib"
+scaler="models/scaler.joblib"
+le="models/label_encoder.joblib"
+sample_images = glob.glob("dataset/*/*.jpg")[:10]
+for img in sample_images:
+    label, proba = predict_image(model, scaler, le, img)
+    print(img, "->", label, proba)
+PY
+<----------------------------------------------------------------------------------->
+7) Run the Flask web UI
+python src/app.py
