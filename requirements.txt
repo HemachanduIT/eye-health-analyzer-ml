@@ -1,9 +1,10 @@
 numpy
-pandas
-opencv-python
+scipy
 scikit-learn
+opencv-python
 scikit-image
-joblib
-tqdm
 matplotlib
-    
+joblib
+flask
+tqdm
+pillow
