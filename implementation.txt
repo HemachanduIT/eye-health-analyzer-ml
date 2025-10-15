@@ -109,3 +109,5 @@ python src/app.py
           │  • Optionally highlight affected region │
           │  • Can integrate with Flask web app    │
           └───────────────────────────────────────┘
+<------------------------------------------------------------------------------------------->
+python src/infer.py --image "dataset/Normal/8_left.jpg" --model "models/svc.joblib" --scaler "models/scaler.joblib" --le "models/label_encoder.joblib" 
