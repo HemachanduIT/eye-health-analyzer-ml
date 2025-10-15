@@ -47,3 +47,65 @@ PY
 <----------------------------------------------------------------------------------->
 7) Run the Flask web UI
 python src/app.py
+<------------------------------------------------------------------------------------>
+                ┌──────────────────────────┐
+                │      Dataset (Images)    │
+                │  ──────────────────────  │
+                │  • Cataract              │
+                │  • Diabetic Retinopathy  │
+                │  • Glaucoma              │
+                │  • Normal                │
+                └────────────┬─────────────┘
+                             │
+                             ▼
+          ┌───────────────────────────────────────┐
+          │       1️⃣ IMAGE PREPROCESSING          │
+          │---------------------------------------│
+          │  Library: OpenCV + scikit-image        │
+          │  • Read image (cv2.imread)             │
+          │  • Resize / normalize                  │
+          │  • Convert to grayscale                │
+          │  • Remove noise (optional)             │
+          └─────────────────┬─────────────────────┘
+                            │
+                            ▼
+          ┌───────────────────────────────────────┐
+          │     2️⃣ FEATURE EXTRACTION             │
+          │---------------------------------------│
+          │  Library: scikit-image + numpy         │
+          │  • HOG (Histogram of Oriented Gradients) │
+          │  • LBP (Local Binary Pattern)          │
+          │  • GLCM (Texture Features)             │
+          │  ➜ Produces numeric vector per image   │
+          └─────────────────┬─────────────────────┘
+                            │
+                            ▼
+          ┌───────────────────────────────────────┐
+          │      3️⃣ MODEL TRAINING                │
+          │---------------------------------------│
+          │  Library: scikit-learn                │
+          │  • Algorithms: Random Forest, SVM     │
+          │  • Train with extracted features + labels │
+          │  • Save models using joblib (.joblib) │
+          └─────────────────┬─────────────────────┘
+                            │
+                            ▼
+          ┌───────────────────────────────────────┐
+          │     4️⃣ MODEL INFERENCE (Prediction)   │
+          │---------------------------------------│
+          │  Library: OpenCV + scikit-learn        │
+          │  • Load trained model + encoders       │
+          │  • Read and preprocess new image       │
+          │  • Extract same features               │
+          │  • Predict disease class (Normal, etc.)│
+          │  • Display confidence or probability   │
+          └─────────────────┬─────────────────────┘
+                            │
+                            ▼
+          ┌───────────────────────────────────────┐
+          │       5️⃣ VISUALIZATION / OUTPUT       │
+          │---------------------------------------│
+          │  • Show predicted class (e.g., "Normal") │
+          │  • Optionally highlight affected region │
+          │  • Can integrate with Flask web app    │
+          └───────────────────────────────────────┘
