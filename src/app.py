@@ -5,7 +5,7 @@ import joblib
 import cv2
 from features import extract_features_from_image
 
-MODEL_PATH = os.path.join("..", "models", "random_forest.joblib")
+MODEL_PATH = os.path.join("..", "models", "svc.joblib")
 SCALER_PATH = os.path.join("..", "models", "scaler.joblib")
 LE_PATH = os.path.join("..", "models", "label_encoder.joblib")
 

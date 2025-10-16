@@ -1,7 +1,7 @@
 # src/features.py
 import cv2
 import numpy as np
-from skimage.feature import hog, local_binary_pattern, greycomatrix, greycoprops
+from skimage.feature import hog, local_binary_pattern, graycomatrix, graycoprops
 
 # parameters for LBP
 LBP_METHOD = 'uniform'
@@ -44,11 +44,11 @@ def compute_glcm_props(image_gray, distances=[1], angles=[0], levels=256, props=
         img = (image_gray / (image_gray.max() / (levels - 1))).astype('uint8')
     else:
         img = image_gray.astype('uint8')
-    glcm = greycomatrix(img, distances=distances, angles=angles, levels=levels, symmetric=True, normed=True)
+    glcm = graycomatrix(img, distances=distances, angles=angles, levels=levels, symmetric=True, normed=True)
     feats = []
     for p in props:
         try:
-            val = greycoprops(glcm, p).mean()
+            val = graycoprops(glcm, p).mean()
         except Exception:
             val = 0.0
         feats.append(val)
