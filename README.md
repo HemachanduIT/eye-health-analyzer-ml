@@ -13,7 +13,7 @@
 
 ## Train
 Run training to extract features and train models:
-<-------------------------------------------------------------->
+
 python src/train.py --dataset_dir dataset --out_dir models
 
 This will:
@@ -23,14 +23,14 @@ This will:
 - Save model, scaler, and label encoder into `models/`.
 
 ## Inference (single image)
-<-------------------------------------------------------------------->
+
 python src/infer.py --image path/to/image.jpg --model models/random_forest.joblib --scaler models/scaler.joblib --le models/label_encoder.joblib
 
 ## Web UI
 Run:
 python src/app.py
 
-<---------------------------------------------------------------------->
+
 Open `http://127.0.0.1:5000/` and upload an image
 ## Notes
 - Tweak feature parameters in `src/features.py` if you want different behavior.
