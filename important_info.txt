@@ -1,0 +1,84 @@
+  --------------command to run inorder to get prediction and confidence-------------------
+python src/infer.py --image "dataset/Normal/8_left.jpg" --model "models/svc.joblib" --scaler "models/scaler.joblib" --le "models/label_encoder.joblib" 
+  <----------------------------------------------------------------------------------------->
+  ---------for svc classifier run===>>> python src/app.py --model_type svc
+  ---------for random forest classfier run====>python src/app.py --model_type random_forest
+  
+  -----------------------code inorder to  mofidy the classifier to 'support-vector-machine'or 'random forest'---------------------
+  parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--model_type",
+    type=str,
+    default="random_forest",  # You can set "svc" or "random_forest"
+    help="Choose which model to load: 'svc' or 'random_forest'"
+)
+args, unknown = parser.parse_known_args()
+<--------------------------------------------------------------------------------------------->
+----------------------------in order to change the  split likt 80-20 and 70-30 we have to change this in train.py---------------
+X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, stratify=y, random_state=42
+    )
+if test_size=0.3 only 30% data is testing data and 70% data is training
+<------------------------------------------------------------------------------------------------>
+                │      Dataset (Images)    │
+                │  ──────────────────────  │
+                │  • Cataract              │
+                │  • Diabetic Retinopathy  │
+                │  • Glaucoma              │
+                │  • Normal                │
+                └────────────┬─────────────┘
+                             │
+                             ▼
+          ┌───────────────────────────────────────┐
+          │       1️⃣ IMAGE PREPROCESSING          │
+          │---------------------------------------│
+          │  Library: OpenCV + scikit-image        │
+          │  • Read image (cv2.imread)             │
+          │  • Resize / normalize                  │
+          │  • Convert to grayscale                │
+          │  • Remove noise (optional)             │
+          └─────────────────┬─────────────────────┘
+                            │
+                            ▼
+          ┌───────────────────────────────────────┐
+          │     2️⃣ FEATURE EXTRACTION             │
+          │---------------------------------------│
+          │  Library: scikit-image + numpy         │
+          │  • HOG (Histogram of Oriented Gradients) │
+          │  • LBP (Local Binary Pattern)          │
+          │  • GLCM (Texture Features)             │
+          │  ➜ Produces numeric vector per image   │
+          └─────────────────┬─────────────────────┘
+                            │
+                            ▼
+          ┌───────────────────────────────────────┐
+          │      3️⃣ MODEL TRAINING                │
+          │---------------------------------------│
+          │  Library: scikit-learn                │
+          │  • Algorithms: Random Forest, SVM     │
+          │  • Train with extracted features + labels │
+          │  • Save models using joblib (.joblib) │
+          └─────────────────┬─────────────────────┘
+                            │
+                            ▼
+          ┌───────────────────────────────────────┐
+          │     4️⃣ MODEL INFERENCE (Prediction)   │
+          │---------------------------------------│
+          │  Library: OpenCV + scikit-learn        │
+          │  • Load trained model + encoders       │
+          │  • Read and preprocess new image       │
+          │  • Extract same features               │
+          │  • Predict disease class (Normal, etc.)│
+          │  • Display confidence or probability   │
+          └─────────────────┬─────────────────────┘
+                            │
+                            ▼
+          ┌───────────────────────────────────────┐
+          │       5️⃣ VISUALIZATION / OUTPUT       │
+          │---------------------------------------│
+          │  • Show predicted class (e.g., "Normal") │
+          │  • Optionally highlight affected region │
+          │  • Can integrate with Flask web app    │
+          └───────────────────────────────────────┘
+<------------------------------------------------------------------------------------------->
+---------
