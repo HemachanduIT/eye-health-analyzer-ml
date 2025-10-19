@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from features import extract_features_from_image
@@ -56,49 +57,65 @@ def main(args):
     print("\n📘 SVC Results:")
     print("Accuracy:", round(acc_svc * 100, 2), "%")
     print(classification_report(y_test, y_pred_svc, target_names=le.classes_))
-    print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred_svc))
     svc_path = os.path.join(out_dir, "svc_model.joblib")
     joblib.dump(svc, svc_path)
     print("✅ Saved:", svc_path)
 
     # 2️⃣ Train Random Forest
     rf = RandomForestClassifier(n_estimators=200, random_state=42)
-    rf.fit(X_train, y_train)  # RF works well without scaling
+    rf.fit(X_train, y_train)
     y_pred_rf = rf.predict(X_test)
     acc_rf = accuracy_score(y_test, y_pred_rf)
     print("\n🌲 Random Forest Results:")
     print("Accuracy:", round(acc_rf * 100, 2), "%")
     print(classification_report(y_test, y_pred_rf, target_names=le.classes_))
-    print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred_rf))
     rf_path = os.path.join(out_dir, "random_forest.joblib")
     joblib.dump(rf, rf_path)
     print("✅ Saved:", rf_path)
 
-    # 3️⃣ Save scaler & label encoder (shared)
+    # 3️⃣ Train Decision Tree
+    dt = DecisionTreeClassifier(random_state=42)
+    dt.fit(X_train, y_train)
+    y_pred_dt = dt.predict(X_test)
+    acc_dt = accuracy_score(y_test, y_pred_dt)
+    print("\n🌳 Decision Tree Results:")
+    print("Accuracy:", round(acc_dt * 100, 2), "%")
+    print(classification_report(y_test, y_pred_dt, target_names=le.classes_))
+    dt_path = os.path.join(out_dir, "decision_tree_model.joblib")
+    joblib.dump(dt, dt_path)
+    print("✅ Saved:", dt_path)
+
+    # 4️⃣ Save scaler & label encoder (shared)
     scaler_path = os.path.join(out_dir, "scaler.joblib")
     le_path = os.path.join(out_dir, "label_encoder.joblib")
     joblib.dump(scaler, scaler_path)
     joblib.dump(le, le_path)
-    print("✅ Saved scaler & label encoder")
+    print("\n✅ Saved scaler & label encoder")
 
-    # 4️⃣ Compare results
+    # 5️⃣ Compare results
     print("\n🏁 Model Comparison:")
-    print(f"SVC Accuracy          : {acc_svc:.4f}")
-    print(f"Random Forest Accuracy: {acc_rf:.4f}")
+    accuracies = {
+        'SVC': acc_svc,
+        'Random Forest': acc_rf,
+        'Decision Tree': acc_dt
+    }
+    for model_name, acc in accuracies.items():
+        print(f"{model_name:<20}: {acc:.4f}")
 
-    if acc_rf > acc_svc:
-        print("\n🎯 Random Forest performed better overall!")
-    elif acc_rf < acc_svc:
-        print("\n🎯 SVC performed better overall!")
-    else:
-        print("\n🤝 Both models performed equally well!")
+    best_model_name = max(accuracies, key=accuracies.get)
+    print(f"\n🎯 {best_model_name} performed best overall!")
 
-    # 5️⃣ Optional: Plot Accuracy Comparison
-    plt.bar(['SVC', 'Random Forest'], [acc_svc, acc_rf], color=['blue', 'green'])
+    # 6️⃣ Plot Accuracy Comparison
+    model_names = list(accuracies.keys())
+    model_accs = list(accuracies.values())
+    plt.figure(figsize=(8, 5))
+    plt.bar(model_names, model_accs, color=['blue', 'green', 'orange'])
     plt.title('Model Accuracy Comparison')
     plt.ylabel('Accuracy')
+    plt.ylim(0, 1.05)
     plt.savefig(os.path.join(out_dir, 'model_comparison.png'))
     print("📊 Saved comparison chart as model_comparison.png")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
