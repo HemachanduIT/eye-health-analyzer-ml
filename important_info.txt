@@ -3,6 +3,7 @@ python src/infer.py --image "dataset/Normal/8_left.jpg" --model "models/svc.jobl
   <----------------------------------------------------------------------------------------->
   ---------for svc classifier run===>>> python src/app.py --model_type svc
   ---------for random forest classfier run====>python src/app.py --model_type random_forest
+  --------- for decision tree classifier run====> python src/app.py --model_type decision_tree_model
   
   -----------------------code inorder to  mofidy the classifier to 'support-vector-machine'or 'random forest'---------------------
   parser = argparse.ArgumentParser()
