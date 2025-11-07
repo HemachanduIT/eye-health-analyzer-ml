@@ -20,6 +20,7 @@ X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, stratify=y, random_state=42
     )
 if test_size=0.3 only 30% data is testing data and 70% data is training
+if test_size=0.2 only 20% data is testing data and 80% data is training
 <------------------------------------------------------------------------------------------------>
                 │      Dataset (Images)    │
                 │  ──────────────────────  │
